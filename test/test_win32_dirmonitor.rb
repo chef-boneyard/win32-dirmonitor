@@ -40,33 +40,34 @@ class TC_Win32_DirMonitor < Test::Unit::TestCase
     assert_raise(ArgumentError){ DirMonitor.new("C:/Bogus/Bogus") }
   end
 
-=begin
-   def test_dirmonitor_action
-      @thread.join
-      @monitor.wait(2){ |c|
-         assert_kind_of(Array, c)
-         assert_kind_of(Struct::DirMonitorStruct, c.first)
-         assert_equal(['action', 'file_name', 'path'], c.first.members)
-         assert_true(c.first.frozen?)
-      }
-   end
+  test "wait method yields a frozen DirMonitorStruct" do
+    @thread.join
+    @monitor.wait(2){ |s|
+      assert_kind_of(Struct::DirMonitorStruct, s)
+      assert_equal(['action', 'file', 'changes'], s.members)
+      assert_kind_of(Array, s.changes)
+      assert_kind_of(Array, s.changes.first)
+      assert_true(s.frozen?)
+    }
+  end
 
-   # We provide some very short timeouts here - shouldn't slow the tests down
-   def test_wait_basic
-      assert_respond_to(@monitor, :wait)
-      assert_nothing_raised{ @monitor.wait(0.01) }
-      assert_nothing_raised{ @monitor.wait(0.01){ |s| } }
-   end
+  test "wait method basic functionality" do
+    assert_respond_to(@monitor, :wait)
+  end
 
-   def test_wait_expected_errors
-      assert_raise(ArgumentError){ @monitor.wait(1,1) }
-      assert_raise(TypeError){ @monitor.wait('a') }
-   end
+  # We provide some very short timeouts here - shouldn't slow the tests down
+  test "wait method accepts an optional timeout value" do
+    assert_nothing_raised{ @monitor.wait(0.01){ |s| } }
+  end
 
-   def test_error_class_defined
-      assert_kind_of(Object, Win32::DirMonitor::Error)
-   end
-=end
+  test "wait method accepts a single integer argument only" do
+    assert_raise(ArgumentError){ @monitor.wait(1,1) }
+    assert_raise(TypeError){ @monitor.wait('a') }
+  end
+
+  test "a custom error class is defined" do
+    assert_kind_of(Object, Win32::DirMonitor::Error)
+  end
 
   def teardown
     @thread.kill if @thread.alive?
