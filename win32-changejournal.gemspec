@@ -1,17 +1,14 @@
 require 'rubygems'
 
 Gem::Specification.new do |spec|
-  spec.name       = 'win32-changejournal'
-  spec.version    = '0.3.4'
+  spec.name       = 'win32-dirmonitor'
+  spec.version    = '1.0.0'
   spec.authors    = ['Daniel J. Berger', 'Park Heesob']
   spec.license    = 'Artistic 2.0'
   spec.email      = 'djberg96@gmail.com'
-  spec.homepage   = 'http://www.rubyforge.org/projects/win32utils'
-  spec.platform   = Gem::Platform::RUBY
-  spec.summary    = 'A library for monitoring files and directories on NTFS'
-  spec.has_rdoc   = true
-  spec.test_file  = 'test/test_win32_changejournal.rb'
-  spec.extensions = ['ext/extconf.rb']
+  spec.homepage   = 'https://github.com/djberg96/win32-dirmonitor'
+  spec.summary    = 'A library for monitoring files on MS Windows'
+  spec.test_file  = 'test/test_win32_dirmonitor.rb'
   spec.files      = Dir['**/*'].reject{ |f| f.include?('git') }
 
   spec.rubyforge_project = 'win32utils'
@@ -20,14 +17,14 @@ Gem::Specification.new do |spec|
     'README',
     'CHANGES',
     'MANIFEST',
-    'ext/win32/changejournal.c'
   ]
 
-  spec.add_development_dependency('test-unit', '>= 2.1.2')
+  spec.add_development_dependency('test-unit')
+  spec.add_development_dependency('rake')
 
   spec.description = <<-EOF
-    The win32-changejournal library provides an interface for MS Windows
-    change journals. A change journal is a record of any changes on a given
-    volume maintained by the operating system itself.
+    The win32-dirmonitor library provides a way to asynchronously monitor
+    changes to files in a given directory, and provides detailed information
+    about the changes that occurred.
   EOF
 end
