@@ -74,6 +74,8 @@ module Win32
     #  >
     #
     def wait(seconds = nil)
+      raise TypeError unless seconds.is_a?(Numeric) if seconds
+
       ole    = WIN32OLE.connect(@conn)
       drive  = @path.split(':').first + ":"
       folder = @path.split(':').last.gsub("\\", "\\\\\\\\")
