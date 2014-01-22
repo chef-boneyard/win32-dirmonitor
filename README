@@ -5,49 +5,46 @@
   gem install win32-dirmonitor
 
 == Synopsis
-   require 'win32/dirmonitor'
-   include Win32
+  require 'win32/dirmonitor'
+  include Win32
 
-   # Indefinitely wait for a change in 'C:\Users' and report any changes.
-   monitor = DirMonitor.new('C:/Users')
+  # Wait for a change in your home directory and report any changes.
 
-   monitor.wait{ |struct|
-      array.each{ |info|
-         p info.file_name
-         p info.action
-         p info.path
-      }
-   }
+  monitor = Win32::DirMonitor.new(ENV['HOME'])
 
-   c.delete
+  # Wait up to 5 minutes for a change journals
+  monitor.wait(300){ |struct|
+    puts 'Something changed'
+    puts 'File: ' + struct.file
+    puts 'Action: ' + struct.action
+    struct.changes.each do |change|
+      puts "Change: " + change[0].to_s
+      puts "Old: " + change[1].to_s
+      puts "New: " + change[2].to_s
+    end
+  }
 	
 == Notes
-   Based on what the MSDN documentation says, this library requires NTFS, and
-   should be preferred on that filesystem. On FAT filesystems, you should
-   use the win32-changenotify library instead.
+  This supplants the win32-changenotify library.
 
-== Acknowledgements
-   This library was originally based on the CJTest module by Jeffrey
-   Cooperstein & Jeffrey Richter.
-	
 == Future Plans
-   Add a method for iterating over all change records.
+  Allow files in subdirectories to be monitored as well.
 
 == Known Bugs  
-   None that I know of. Please log any bug reports on the RubyForge
-   project page at http://www.rubyforge.net/projects/win32utils
+  None that I know of. Please log any bug reports on the RubyForge
+  project page at https://github.com/djberg96/win32-dirmonitor.
 
 == License
-   Artistic 2.0
+  Artistic 2.0
     
 == Copyright
-   (C) 2003-2009 Daniel J. Berger, All Rights Reserved
+  (C) 2014 Daniel J. Berger, All Rights Reserved
     
 == Warranty
-   This library is provided "as is" and without any express or
-   implied warranties, including, without limitation, the implied
-   warranties of merchantability and fitness for a particular purpose.
+  This library is provided "as is" and without any express or
+  implied warranties, including, without limitation, the implied
+  warranties of merchantability and fitness for a particular purpose.
 
 == Authors
-   Park Heesob
-   Daniel J. Berger
+  * Daniel J. Berger
+  * Park Heesob
