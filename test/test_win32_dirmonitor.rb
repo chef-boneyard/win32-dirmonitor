@@ -69,6 +69,26 @@ class TC_Win32_DirMonitor < Test::Unit::TestCase
     assert_kind_of(Object, Win32::DirMonitor::Error)
   end
 
+  test "path attribute basic functionality" do
+    assert_respond_to(@monitor, :path)
+    assert_nothing_raised{ @monitor.path }
+    assert_kind_of(String, @monitor.path)
+  end
+
+  test "path method returns expected value" do
+    assert_equal(Dir.pwd, @monitor.path.tr("\\", "/"))
+  end
+
+  test "host attribute basic functionality" do
+    assert_respond_to(@monitor, :host)
+    assert_nothing_raised{ @monitor.host}
+    assert_kind_of(String, @monitor.host)
+  end
+
+  test "host method returns expected value" do
+    assert_equal(Socket.gethostname, @monitor.host)
+  end
+
   def teardown
     @thread.kill if @thread.alive?
 
