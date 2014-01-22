@@ -28,6 +28,10 @@ module Win32
     # is provided, then the current host is assumed.
     #
     def initialize(path, host = Socket.gethostname)
+      raise ArgumentError unless File.exists?(path)
+      raise TypeError unless path.is_a?(String)
+      raise TypeError unless host.is_a?(String)
+
       @path = path.tr("/", "\\")
       @host = host
       @conn = "winmgmts:{impersonationlevel=impersonate}!//#{host}/root/cimv2"
