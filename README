@@ -12,7 +12,7 @@
 
   monitor = Win32::DirMonitor.new(ENV['HOME'])
 
-  # Wait up to 5 minutes for a change journals
+  # Wait up to 5 minutes for a change.
   monitor.wait(300){ |struct|
     puts 'Something changed'
     puts 'File: ' + struct.file
