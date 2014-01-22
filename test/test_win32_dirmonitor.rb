@@ -16,7 +16,7 @@ class TC_Win32_DirMonitor < Test::Unit::TestCase
 
   def setup
     # The thread is used to force an event to happen for the tests
-    @monitor = DirMonitor.new("c:\\")
+    @monitor = DirMonitor.new(Dir.pwd)
     @thread  = Thread.new{
        sleep 2
        File.open(@@file, 'w'){ |fh| fh.puts 'Delete me!' }
@@ -25,6 +25,19 @@ class TC_Win32_DirMonitor < Test::Unit::TestCase
 
   test "version constant is set to expected value" do
     assert_equal('1.0.0', DirMonitor::VERSION)
+  end
+
+  test "constructor requires a path argument" do
+    assert_raise(ArgumentError){ DirMonitor.new }
+  end
+
+  test "path and host arguments must be strings" do
+    assert_raise(TypeError){ DirMonitor.new(1) }
+    assert_raise(TypeError){ DirMonitor.new(Dir.pwd, 1) }
+  end
+
+  test "path argument must exist" do
+    assert_raise(ArgumentError){ DirMonitor.new("C:/Bogus/Bogus") }
   end
 
 =begin
@@ -36,11 +49,6 @@ class TC_Win32_DirMonitor < Test::Unit::TestCase
          assert_equal(['action', 'file_name', 'path'], c.first.members)
          assert_true(c.first.frozen?)
       }
-   end
-
-   def test_delete
-      assert_respond_to(@monitor, :delete)
-      assert_nothing_raised{ @monitor.delete }
    end
 
    # We provide some very short timeouts here - shouldn't slow the tests down
