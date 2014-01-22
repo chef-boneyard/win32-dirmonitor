@@ -25,8 +25,9 @@
   }
 	
 == Notes
-  This largely supplants the win32-changenotify library since it gives
-  details about the changes that occur.
+  This replaces the win32-changejournal library and supplants the
+  win32-changenotify library since it gives details about the changes
+  that occur.
 
 == Future Plans
   Allow files in subdirectories to be monitored as well.
