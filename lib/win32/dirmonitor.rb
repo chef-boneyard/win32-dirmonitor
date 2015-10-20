@@ -7,7 +7,7 @@ module Win32
     class Error < StandardError; end
 
     # The version of the win32-dirmonitor library
-    VERSION = '1.0.0'
+    VERSION = '1.0.1'
 
     # The struct yielded to the wait method
     DirMonitorStruct = Struct.new(
@@ -28,7 +28,7 @@ module Win32
     # is provided, then the current host is assumed.
     #
     def initialize(path, host = Socket.gethostname)
-      raise ArgumentError unless File.exists?(path)
+      raise ArgumentError unless File.exist?(path)
       raise TypeError unless path.is_a?(String)
       raise TypeError unless host.is_a?(String)
 
