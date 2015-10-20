@@ -24,7 +24,7 @@ class TC_Win32_DirMonitor < Test::Unit::TestCase
   end
 
   test "version constant is set to expected value" do
-    assert_equal('1.0.0', DirMonitor::VERSION)
+    assert_equal('1.0.1', DirMonitor::VERSION)
   end
 
   test "constructor requires a path argument" do
@@ -98,6 +98,6 @@ class TC_Win32_DirMonitor < Test::Unit::TestCase
   end
 
   def self.shutdown
-    File.delete(@@file) if File.exists?(@@file)
+    File.delete(@@file) if File.exist?(@@file)
   end
 end
